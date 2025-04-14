@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Management System</title>
+    <!-- Bootstrap CSS kütüphanesi -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- Navbar (Üst Menü) -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Ana Sayfa</a>
+                    </li>
+                </ul>
+                <!-- Arama Formu -->
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Ara" aria-label="Ara">
+                    <button class="btn btn-outline-success" type="submit">Ara</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Öğrenci Kayıt Butonu -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerStudentModal">
+            Öğrenci Kaydet
+        </button>
+
+        <!-- Öğrenci Tablosu -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Öğrenci Numarası</th>
+                    <th scope="col">Ad</th>
+                    <th scope="col">Soyad</th>
+                    <th scope="col">Sınıf</th>
+                    <th scope="col">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody id="studentList">
+                <!-- Öğrenci listesi JavaScript ile doldurulacak -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Öğrenci Kayıt Modalı -->
+    <div class="modal fade" id="registerStudentModal" tabindex="-1" aria-labelledby="registerStudentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerStudentModalLabel">Yeni Öğrenci Kaydı</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="studentForm" novalidate>
+                        <!-- Gizli ID alanı -->
+                        <input hidden type="number" name="id" value="0" />
+                        <div class="mb-3">
+                            <label for="studentNumber" class="form-label">Öğrenci Numarası</label>
+                            <input type="number" class="form-control" id="studentNumber" name="no" min="1" required>
+                            <div class="invalid-feedback">
+                                Öğrenci numarası 1 veya daha büyük olmalıdır.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Ad</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required
+                                minlength="2" maxlength="20">
+                            <div class="invalid-feedback">
+                                Ad alanı zorunludur ve 2 ile 20 karakter arasında olmalıdır.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Soyad</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required minlength="2"
+                                maxlength="20">
+                            <div class="invalid-feedback">
+                                Soyad alanı zorunludur ve 2 ile 20 karakter arasında olmalıdır.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="class" class="form-label">Sınıf</label>
+                            <input type="text" class="form-control" id="class" name="class" required>
+                            <div class="invalid-feedback">
+                                Sınıf alanı zorunludur.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Öğrenci Güncelleme Modalı -->
+    <div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="updateStudentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStudentModalLabel">Öğrenci Güncelle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateStudentForm" novalidate>
+                        <!-- Gizli ID alanı -->
+                        <input hidden type="number" name="id" id="updateStudentId" />
+                        <div class="mb-3">
+                            <label for="updateStudentNumber" class="form-label">Öğrenci Numarası</label>
+                            <input type="number" class="form-control" id="updateStudentNumber" name="no" min="1"
+                                required>
+                            <div class="invalid-feedback">
+                                Öğrenci numarası 1 veya daha büyük olmalıdır.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateFirstName" class="form-label">Ad</label>
+                            <input type="text" class="form-control" id="updateFirstName" name="firstName" required
+                                minlength="2" maxlength="20">
+                            <div class="invalid-feedback">
+                                Ad alanı zorunludur ve 2 ile 20 karakter arasında olmalıdır.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateLastName" class="form-label">Soyad</label>
+                            <input type="text" class="form-control" id="updateLastName" name="lastName" required
+                                minlength="2" maxlength="20">
+                            <div class="invalid-feedback">
+                                Soyad alanı zorunludur ve 2 ile 20 karakter arasında olmalıdır.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="updateClass" class="form-label">Sınıf</label>
+                            <input type="text" class="form-control" id="updateClass" name="class" required>
+                            <div class="invalid-feedback">
+                                Sınıf alanı zorunludur.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Güncelle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Silme Onay Modalı -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Silme Onayı</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    Bu öğrenciyi silmek istediğinizden emin misiniz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hayır</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Evet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Dosyaları -->
+    <script src="Student.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js"
+        integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
